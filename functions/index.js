@@ -10,5 +10,7 @@ app.get('/', function(request, response)  {
   response.send("mantap");
 });
 
-
+app.get('/kosong', function(request, response)  {
+  response.render("blank");
+});
 exports.apps = functions.https.onRequest(app);
