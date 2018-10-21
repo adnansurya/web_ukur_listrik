@@ -7,7 +7,10 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + 'public'));
 
 app.get('/', function(request, response)  {
-  response.send("mantap");
+  response.render("blank");
+});
+app.get('/test', function(request, response)  {
+  response.send("ini halaman testing");
 });
 
 app.get('/kosong', function(request, response)  {
