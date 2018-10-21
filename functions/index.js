@@ -21,8 +21,13 @@ app.get('/kosong', function(request, response)  {
 app.get('/status', function(request, response)  {
   response.render("status", {title : "Status", appName : appName});
 });
+
+app.get('/monitor', function(request, response)  {
+  response.render("monitoring", {title : "Monitoring", appName : appName});
+});
 app.get('/login', function(request, response)  {
   response.render("login", {title : "Login", appName : appName});
 });
+
 
 exports.apps = functions.https.onRequest(app);
