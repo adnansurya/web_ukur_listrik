@@ -13,4 +13,9 @@ app.get('/', function(request, response)  {
 app.get('/kosong', function(request, response)  {
   response.render("blank");
 });
+
+app.get('/status', function(request, response)  {
+  response.render("status");
+});
+
 exports.apps = functions.https.onRequest(app);
