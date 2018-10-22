@@ -1,5 +1,6 @@
-var data = [], totalPoints = 110;
-var updateInterval = 320;
+
+var data = [], totalPoints = 510;
+var updateInterval = 1000;
 var realtime = 'on';
 
 $(function () {
@@ -19,11 +20,11 @@ $(function () {
         },
         yaxis: {
             min: 0,
-            max: 100
+            max: 200
         },
         xaxis: {
             min: 0,
-            max: 100
+            max: 500
         }
     });
 
@@ -47,23 +48,33 @@ $(function () {
     });
     //====================================================================================================
 
-    
 });
 
 function getRandomData() {
-    if (data.length > 0) data = data.slice(1);
+  // db.ref('/users/' + user.uid).once('value').then(function(snapshot) { // load 1x
+  db.ref('/hasil').on('value', function(snapshot) { // load realtime
+   var userData = snapshot.val();
+   if (data.length > 0) data = data.slice(1);
 
-    while (data.length < totalPoints) {
-        var prev = data.length > 0 ? data[data.length - 1] : 50, y = prev + Math.random() * 10 - 5;
-        if (y < 0) { y = 0; } else if (y > 100) { y = 100; }
+   while (data.length < totalPoints) {
+       var prev = data.length > 0 ? data[data.length - 1] : 50;
 
-        data.push(y);
-    }
+       var y = userData.watt;
+       $("#dayaTxt").text(userData.watt);
+       $("#arusTxt").text(userData.ampere);
 
-    var res = [];
-    for (var i = 0; i < data.length; ++i) {
-        res.push([i, data[i]])
-    }
+       data.push(y);
+       console.log("Akses Server ");
+   }
 
-    return res;
+
+ });
+
+ var res = [];
+ for (var i = 0; i < data.length; ++i) {
+     res.push([i, data[i]])
+ }
+
+ return res;
+
 }

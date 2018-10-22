@@ -41,7 +41,20 @@
     </section>
 
     <section class="content">
-        <div class="container-fluid">
+        <div class="container-fluid" id="app">
+          <div class="row clearfix">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="card">
+                    <div class="header">
+                        <h2>Monitoring Data Stream</h2>
+                    </div>
+                    <div class="body">
+                      <h3>Daya : <h2 id="dayaTxt">0</h2> </h3>
+                      <h3>Arus: <h2 id="arusTxt">0</h2> </h3>
+                    </div>
+                  </div>
+              </div>
+          </div>
           <!-- CPU Usage -->
           <div class="row clearfix">
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -49,7 +62,7 @@
                       <div class="header">
                           <div class="row clearfix">
                               <div class="col-xs-12 col-sm-6">
-                                  <h2>Penggunaan Listrik (kWh)</h2>
+                                  <h2>Penggunaan Listrik (Watt)</h2>
                               </div>
                               <div class="col-xs-12 col-sm-6 align-right">
                                   <div class="switch panel-switch-btn">
@@ -58,18 +71,7 @@
                                   </div>
                               </div>
                           </div>
-                          <ul class="header-dropdown m-r--5">
-                              <li class="dropdown">
-                                  <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                      <i class="material-icons">more_vert</i>
-                                  </a>
-                                  <ul class="dropdown-menu pull-right">
-                                      <li><a href="javascript:void(0);">Action</a></li>
-                                      <li><a href="javascript:void(0);">Another action</a></li>
-                                      <li><a href="javascript:void(0);">Something else here</a></li>
-                                  </ul>
-                              </li>
-                          </ul>
+                          
                       </div>
                       <div class="body">
                           <div id="real_time_chart" class="dashboard-flot-chart"></div>
@@ -78,6 +80,8 @@
               </div>
           </div>
           <!-- #END# CPU Usage -->
+          <!-- CPU Usage -->
+
 
         </div>
     </section>
@@ -99,8 +103,13 @@
   <script src="plugins/flot-charts/jquery.flot.pie.js"></script>
   <script src="plugins/flot-charts/jquery.flot.categories.js"></script>
   <script src="plugins/flot-charts/jquery.flot.time.js"></script>
+  <script type="text/javascript">
+    const  db = firebase.database();
+
+  </script>
 
   <script src="js/pages/charts/flot.js"></script>
+
 
 
 </body>
