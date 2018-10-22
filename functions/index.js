@@ -25,9 +25,27 @@ app.get('/status', function(request, response)  {
 app.get('/monitor', function(request, response)  {
   response.render("monitoring", {title : "Monitoring", appName : appName});
 });
+app.get('/pengaturan', function(request, response)  {
+  response.render("pengaturan", {title : "Pengaturan", appName : appName});
+});
+
 app.get('/login', function(request, response)  {
   response.render("login", {title : "Login", appName : appName});
 });
 
 
 exports.apps = functions.https.onRequest(app);
+
+// exports.updateHasil = functions.database.ref('/hasil')
+//     .onUpdate((snapshot, context) => {
+//       // Grab the current value of what was written to the Realtime Database.
+//       const original = snapshot.val();
+//       console.log('Catat Log', context.params.pushId, original);
+//       //const uppercase = original.toUpperCase();
+//       return snapshot.ref.parent.child('log').push({
+//           watt : original.watt,
+//           waktu : original.ampere,
+//           tercatat : admin.database.ServerValue.TIMESTAMP
+//       });
+//
+// });
