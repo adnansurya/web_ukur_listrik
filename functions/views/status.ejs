@@ -46,10 +46,10 @@
                       <div class="body">
                         <div class="block-header">
                             <h2>Penggunaan Listrik Hingga Saat Ini</h2>
-                            <h1>425.2 kWh</h1>
+                            <h2><h1 id="usageTxt">Loading...</h1></h2>
                             <br />
                             <h2>Perkiraan Tarif Listrik</h2>
-                            <h1>Rp 574.870,-</h1>
+                            <h1 id="tarifTxt">Loading...</h1>
                             <br />
                             <h2><i>Reset terakhir tanggal 20 September 2018</i></h2>
                         </div>
@@ -62,6 +62,36 @@
     </section>
 
   <%- include('all/script'); -%>
+  <script type="text/javascript">
+  const  db = firebase.database();
+  db.ref('/log').once("value").then(function(snapshot) {
+    var total_watt = 0;
+    var total_waktu = 0;
+    var tarif_pemakaian = 0;
+    snapshot.forEach(function(childSnapshot) {
+      var key = childSnapshot.key;
+      var dataLog = childSnapshot.val();
+      total_watt = total_watt + dataLog.watt //total pemakaian dalam satuan watt
+      total_waktu = total_waktu + dataLog.waktu //total waktu pemakaian dalam satuan milisekon
+    });
+
+    var total_kilowatt = total_watt / 1000; //total pemakaian dalam satuan kilowatt
+    var total_detik = total_waktu / 1000; //total waktu pemakaian dalam satuan detik
+    var total_jam = total_detik / 3600; //total waktu pemakaian dalam satuan jam
+    db.ref('/setting').once("value").then(function(snapshot) {
+       var pengaturan = snapshot.val();
+       var tarif = pengaturan.tdl;
+        tarif_pemakaian = total_kilowatt * total_jam * tarif;
+        $("#tarifTxt").text("Rp. " + tarif_pemakaian.toFixed(2));
+    });
+
+
+    $("#usageTxt").text(total_kilowatt.toFixed(2) + " kWh");
+
+
+
+ });
+  </script>
 </body>
 
 </html>
