@@ -27,6 +27,9 @@ app.get('/status', function(request, response)  {
 app.get('/monitor', function(request, response)  {
   response.render("monitoring", {title : "Monitoring", appName : appName});
 });
+app.get('/log', function(request, response)  {
+  response.render("log", {title : "Log", appName : appName});
+});
 app.get('/pengaturan', function(request, response)  {
   response.render("pengaturan", {title : "Pengaturan", appName : appName});
 });
