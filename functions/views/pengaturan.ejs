@@ -45,11 +45,29 @@
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <div class="card">
                     <div class="header">
-                      <h2>Tanggal Rekap</h2>
+                      <h2>Tarif Dasar Listrik</h2>
                     </div>
                       <div class="body">
-                          <p>Rekap Data akan direset pada : 12 Agustus</p>
-                          <button class="btn btn-primary waves-effect" data-type="success"><strong>UBAH</strong></button>
+                        <p>Tarif Dasar Listrik yang saat ini digunakan adalah : <h2 id="tarifTxt">Loading...</h2></p>
+                        <br>
+                        <p>Ubah Tarif Dasar Listrik Menjadi : </p>
+                        <br>
+                        <form>
+                            <div class="row clearfix">
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input id="inputTarifTxt"type="text" class="form-control">
+                                            <label class="form-label">Masukkan Tarif Baru</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <button id="simpanTarifBtn"class="btn btn-primary waves-effect" data-type="success"><strong>SIMPAN</strong></button>
+                                </div>
+                            </div>
+                        </form>
+
                       </div>
                   </div>
               </div>
@@ -58,15 +76,16 @@
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <div class="card">
                     <div class="header">
-                      <h2>Tarif Dasar Listrik</h2>
+                      <h2>Tanggal Rekap</h2>
                     </div>
                       <div class="body">
-                        <p>Tarif Dasar Listrik yang saat ini digunakan adalah : <h2><strong>15.000</strong></h2></p>
+                          <p>Rekap data akan direset pada tanggal : <h2>12</h2> </p>
                           <button class="btn btn-primary waves-effect" data-type="success"><strong>UBAH</strong></button>
                       </div>
                   </div>
               </div>
           </div>
+
           <div class="row clearfix">
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <div class="card">
@@ -74,8 +93,8 @@
                       <h2>Reset Data dan Pengaturan</h2>
                     </div>
                       <div class="body">
-                          <p><i>*Daya listrik dan tarif akan dihapus lalu diubah menjadi nol</i></p>
-                          <button class="btn btn-danger btn-lg waves-effect" data-type="basic"><strong>RESET DATA</strong></button>
+                          <p><i>*Log Pemakaian listrik dan tarif akan dihapus lalu diubah menjadi nol</i></p>
+                          <button id="resetBtn" class="btn btn-danger btn-lg waves-effect" data-type="basic"><strong>RESET DATA</strong></button>
                       </div>
                   </div>
               </div>
@@ -84,6 +103,47 @@
     </section>
 
   <%- include('all/script'); -%>
+  <script type="text/javascript">
+  const  db = firebase.database();
+  db.ref('/setting').once('value', function(snapshot) { // load realtime
+   var pengaturan = snapshot.val();
+   $("#tarifTxt").text("Rp. " + pengaturan.tdl);
+  });
+
+  $('#simpanTarifBtn').click(function() {
+    var tarif = $('#inputTarifTxt').val();
+    db.ref('/setting/tdl').set(tarif, function(error) {
+      if (error) {
+        // The write failed...
+        alert("Peringatan! Data Gagal Disimpan!")
+      } else {
+        // Data saved successfully!
+        alert("Data Berhasil Disimpan!")
+      }
+    });
+  });
+
+  $('#resetBtn').click(function() {
+
+    db.ref('/log').remove();
+
+    db.ref('/hasil').set({
+      ampere : 0,
+      watt : 0
+    });
+
+    db.ref('/setting/tdl').set(0, function(error) {
+      if (error) {
+        // The write failed...
+        alert("Peringatan! Data Gagal Disimpan!")
+      } else {
+        // Data saved successfully!
+        alert("Data Berhasil Disimpan!")
+      }
+    });
+  });
+
+  </script>
 </body>
 
 </html>
