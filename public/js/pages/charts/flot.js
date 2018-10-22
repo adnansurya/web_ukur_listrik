@@ -60,8 +60,8 @@ function getRandomData() {
        var prev = data.length > 0 ? data[data.length - 1] : 50;
 
        var y = userData.watt;
-       $("#dayaTxt").text(userData.watt);
-       $("#arusTxt").text(userData.ampere);
+       $("#dayaTxt").text(userData.watt + " Watt");
+       $("#arusTxt").text(userData.ampere + " A");
 
        data.push(y);
        console.log("Akses Server ");
