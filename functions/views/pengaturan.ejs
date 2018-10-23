@@ -137,11 +137,12 @@
     db.ref('/setting/tdl').set(0, function(error) {
       if (error) {
         // The write failed...
-        alert("Peringatan! Data Gagal Disimpan!")
+        alert("Peringatan! Data Gagal Direset!")
       } else {
         // Data saved successfully!
-        alert("Data Berhasil Disimpan!")
+        alert("Data Berhasil Direset!")
       }
+        location.href ='/pengaturan';
     });
   });
 
