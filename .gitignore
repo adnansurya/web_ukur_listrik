@@ -1,6 +1,6 @@
 /functions/node_modules
 .firebaserc
 firebase-debug.log
-firebase_config.js
+
 
 \.firebase/
