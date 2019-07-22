@@ -63,13 +63,19 @@ app.get('/update/:watt/:ampere/:delay', function (req, res){
   var dateString = date + "-" +(month + 1) + "-" + year + " " + hour + ":" + minute +  ":" + second;
 
   waktu =  dateString;
-  
+
 
   db.ref('log/').push({
 
     waktu: waktu,
     ampere: ampere,
     delay : delay,
+    watt : watt
+  });
+
+  db.ref('hasil/').set({
+
+    ampere: ampere,
     watt : watt
   });
 
@@ -84,16 +90,4 @@ app.get('/login', function(request, response)  {
 
 exports.apps = functions.https.onRequest(app);
 
-// exports.updateHasil = functions.database.ref('/hasil')
-//     .onUpdate((snapshot, context) => {
-//       // Grab the current value of what was written to the Realtime Database.
-//       const original = snapshot.val();
-//       console.log('Catat Log', context.params.pushId, original);
-//       //const uppercase = original.toUpperCase();
-//       return snapshot.ref.parent.child('log').push({
-//           watt : original.watt,
-//           waktu : original.ampere,
-//           tercatat : admin.database.ServerValue.TIMESTAMP
-//       });
-//
-// });
+
