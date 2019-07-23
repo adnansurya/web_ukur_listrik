@@ -56,11 +56,11 @@ app.get('/update/:watt/:ampere/:delay', function (req, res){
   var date = currentDate.getDate();
   var month = currentDate.getMonth(); //Be careful! January is 0 not 1
   var year = currentDate.getFullYear();
-  var hour = currentDate.getHours();
+  var hour = currentDate.getHours(); // GMT +0
   var minute = currentDate.getMinutes();
   var second = currentDate.getSeconds();
 
-  var dateString = date + "-" +(month + 1) + "-" + year + " " + hour + ":" + minute +  ":" + second;
+  var dateString = date + "-" +(month + 1) + "-" + year + " " + (hour+8) + ":" + minute +  ":" + second;
 
   waktu =  dateString;
 
