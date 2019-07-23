@@ -125,7 +125,7 @@
        
           
 
-          <div class="row">
+         
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <div class="card">
                     <div class="header">
@@ -137,7 +137,7 @@
                       </div>
                   </div>
               </div>
-          </div>
+      
         </div>
     </section>
 
@@ -194,7 +194,7 @@
         // The write failed...
         alert("Peringatan! Data TDL Gagal Direset!")
       } else {
-          db.ref('/setting/tarifNorm').set(0, function(error) {
+        db.ref('/setting/tarifNorm').set(0, function(error) {
           if (error) {
             // The write failed...
             alert("Peringatan! Data Tarif Normal Gagal Direset!")
@@ -206,7 +206,7 @@
             
         });
       }
-        location.href ='/pengaturan';
+       
     });
   });
 
