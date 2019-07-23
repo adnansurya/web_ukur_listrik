@@ -55,15 +55,11 @@
                                 <tr>
                                     <th>Daya (Watt)</th>
                                     <th>Arus (A)</th>
-                                    <th>Waktu (ms)</th>
+                                    <th>Delay (ms)</th>
+                                    <th>Waktu </th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr v-for="data in log.slice().reverse()">
-                                    <td>{{data.watt}}</td>
-                                    <td>{{data.ampere}}</td>
-                                    <td>{{data.waktu}}</td>
-                                </tr>
+                            <tbody id="bodyTable">                                
 
                             </tbody>
                         </table>
@@ -77,19 +73,24 @@
 
   <%- include('all/script'); -%>
 
-  <!-- VUE JS -->
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
-  <!-- VueFire -->
-  <script src="https://unpkg.com/vuefire/dist/vuefire.js"></script>
   <script type="text/javascript">
-    const  db = firebase.database();
-  var app = new Vue({
-    el: '#app',
-    firebase: {
-      log: db.ref('log').limitToLast(50)
-    }
-  });
+    var query = firebase.database().ref('log');//.orderByChild('skor').limitToFirst(50);
+    query.once('value').then(function(snapshot){
+      snapshot.forEach(function(childSnapshot){
+        var key = childSnapshot.key;
+        var value = childSnapshot.val();
+        // console.log(value);
+        var ampere = value.ampere;
+        var watt = value.watt;
+        var waktu = value.waktu;
+        var delay = value.delay;
+
+        $('#bodyTable').append('<tr><td>' +watt+'</td><td>' + ampere +'</td><td>' +delay +'</td><td>' +waktu +'</td></tr>');
+      });
+    
+      var table =   $('#tabel').DataTable();
+
+    });
 
   </script>
 </body>
