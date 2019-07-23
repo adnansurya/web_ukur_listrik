@@ -51,7 +51,7 @@
                             <h2>Perkiraan Tarif Listrik</h2>
                             <h1 id="tarifTxt">Loading...</h1>
                             <br />
-                            <h1 class="text-success">Penggunaan Normal</h1>
+                            <h1 id="usageLimitTxt" >Loading....</h1>
                             <h2><i>Reset terakhir tanggal 15 Mei 2019</i></h2>
                         </div>
                       </div>
@@ -65,33 +65,71 @@
   <%- include('all/script'); -%>
   <script type="text/javascript">
   const  db = firebase.database();
-  db.ref('/log').once("value").then(function(snapshot) {
-    var total_watt = 0;
-    var total_waktu = 0;
-    var tarif_pemakaian = 0;
+  let total_watt = 0;
+    let total_waktu = 0;
+    let tarif_pemakaian = 0;
+    let total_kilowatt, total_detik, total_jam, total_pakai;
+    let tarifNorm;
+  db.ref('/log').once("value").
+  then(function(snapshot) {
+    // console.log(snapshot.val());
+    
     snapshot.forEach(function(childSnapshot) {
-      var key = childSnapshot.key;
-      var dataLog = childSnapshot.val();
-      total_watt = total_watt + dataLog.watt //total pemakaian dalam satuan watt
-      total_waktu = total_waktu + dataLog.waktu //total waktu pemakaian dalam satuan milisekon
+      let key = childSnapshot.key;
+      let dataLog = childSnapshot.val();
+     
+      
+     
+      
+      total_watt = total_watt + parseFloat(dataLog.watt) //total pemakaian dalam satuan watt
+      total_waktu = total_waktu + parseFloat(dataLog.delay) //total waktu pemakaian dalam satuan milisekon
+      console.log("Total Watt : " + total_watt);
+      console.log("Total Waktu : " + total_waktu);
+      
     });
+    return  db.ref('/setting').once("value");
 
-    var total_kilowatt = total_watt / 1000; //total pemakaian dalam satuan kilowatt
-    var total_detik = total_waktu / 1000; //total waktu pemakaian dalam satuan detik
-    var total_jam = total_detik / 3600; //total waktu pemakaian dalam satuan jam
-    db.ref('/setting').once("value").then(function(snapshot) {
-       var pengaturan = snapshot.val();
-       var tarif = pengaturan.tdl;
-        tarif_pemakaian = total_kilowatt * total_jam * tarif;
-        $("#tarifTxt").text("Rp. " + tarif_pemakaian.toFixed(2));
-    });
+   
+ }).then(function(snapshot) {
+
+    total_kilowatt = total_watt / 1000; //total pemakaian dalam satuan kilowatt
+    console.log("Total KiloWatt : " + total_kilowatt);
+    total_detik = total_waktu / 1000; //total waktu pemakaian dalam satuan detik
+    console.log("Total Detik : " + total_detik);
+    total_jam = total_detik / 3600; //total waktu pemakaian dalam satuan jam
+    console.log("Total Jam : " + total_jam);
+    let pengaturan = snapshot.val();
+    let tarif = pengaturan.tdl;
+    total_pakai = total_kilowatt * total_jam;
+    console.log("Total Kilowatt : " + total_kilowatt );
+    tarif_pemakaian = total_pakai * tarif;
+    
+    console.log("Total Tarif : " + tarif_pemakaian );
+    $("#tarifTxt").text("Rp. " + tarif_pemakaian.toFixed(2));
+    $("#usageTxt").text(total_pakai.toFixed(2) + " kWh");
+
+    return db.ref('/setting').once('value');
+
+  }).then(function(snapshot) { 
+      var pengaturan = snapshot.val();
+      tarifNorm = parseFloat(pengaturan.tarifNorm);
+      if(tarif_pemakaian <= tarifNorm){
+        $('#usageLimitTxt').text("Penggunaan Normal");
+        $('#usageLimitTxt').addClass('text-success');
+
+      }else{
+        $('#usageLimitTxt').text("Penggunaan Melebihi Batas");
+        $('#usageLimitTxt').addClass('text-danger');
+      }
+      
+  });
+
+ 
 
 
-    $("#usageTxt").text(total_kilowatt.toFixed(2) + " kWh");
 
 
-
- });
+ 
   </script>
 </body>
 
